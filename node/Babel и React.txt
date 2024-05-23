@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Timer with Babel</title>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- Подключаем React и ReactDOM -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Наш скрипт с кодом React -->
+    <script type="text/babel">
+
+        // Функциональный компонент
+        function TimerFunctional() {
+            const [time, setTime] = React.useState(0);
+
+            React.useEffect(() => {
+                const interval = setInterval(() => {
+                    setTime(prevTime => prevTime + 1);
+                }, 1000);
+
+                return () => clearInterval(interval);
+            }, []);
+
+            return (
+                <div>
+                    <h1>Functional Timer</h1>
+                    <p>{time} seconds</p>
+                </div>
+            );
+        }
+
+        // Компонент-класс ES6
+        class TimerClass extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { time: 0 };
+            }
+
+            componentDidMount() {
+                this.interval = setInterval(() => {
+                    this.setState(prevState => ({ time: prevState.time + 1 }));
+                }, 1000);
+            }
+
+            componentWillUnmount() {
+                clearInterval(this.interval);
+            }
+
+            render() {
+                return (
+                    <div>
+                        <h1>Class Timer</h1>
+                        <p>{this.state.time} seconds</p>
+                    </div>
+                );
+            }
+        }
+
+        // Компонент со стрелочной функцией
+        const TimerArrowFunction = () => {
+            const [time, setTime] = React.useState(0);
+
+            React.useEffect(() => {
+                const interval = setInterval(() => {
+                    setTime(prevTime => prevTime + 1);
+                }, 1000);
+
+                return () => clearInterval(interval);
+            }, []);
+
+            return (
+                <div>
+                    <h1>Arrow Function Timer</h1>
+                    <p>{time} seconds</p>
+                </div>
+            );
+        }
+
+        // Рендеринг компонентов на страницу
+        ReactDOM.render(
+            <div>
+                <TimerFunctional />
+                <TimerClass />
+                <TimerArrowFunction />
+            </div>,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+</html>
